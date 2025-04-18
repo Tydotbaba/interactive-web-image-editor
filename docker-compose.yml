@@ -1,14 +1,25 @@
-# docker-compose.yml
 
 services:
   backend:
     build: ./backend
     ports:
       - "8000:8000"
-    volumes:
-      - ./backend:/app
+    # volumes:
+    #   - ./backend:/app
     environment:
       - PYTHON_ENV=development
+    develop:
+      watch:
+        - action: sync
+          path: ./backend
+          target: /app
+          ignore:
+            - venv
+            - __pycache__
+            # - *.pyc
+            - .pytest_cache
+            - .env
+            - instance
 
   frontend:
     build: ./frontend
@@ -16,6 +27,16 @@ services:
       - "3000:80"
     depends_on:
       - backend
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
+    # volumes:
+    #   - ./frontend:/app
+    #   - /app/node_modules
+    develop:
+      watch:
+        - action: sync
+          path: ./frontend
+          target: /app
+          ignore:
+            - node_modules
+            - build
+            - .git
+            - .next
