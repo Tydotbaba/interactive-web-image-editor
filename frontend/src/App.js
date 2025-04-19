@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Row, Col, Form, Button, Image } from 'react-bootstrap';
+// import './App.css'; // You might still have some custom styles
 // import Button from 'react-bootstrap/Button';
 // import Container from 'react-bootstrap/Container';
 // import Row from 'react-bootstrap/Row';
@@ -88,161 +88,136 @@ function App() {
     };
 
     return (
-      <Container className="mt-4">
-      <h1>Interactive Image Processor</h1>
+      <div className="pa3 sans-serif bg-light-pink">
+      <h1 className="f1 fw6 mv3">Interactive Image Processor</h1>
 
-      <Row className="mb-3">
-        <Col md={6}>
-          <Form.Group controlId="formFile" className="mb-3">
-            <Form.Label>Upload Image:</Form.Label>
-            <Form.Control type="file" onChange={handleImageUpload} />
-          </Form.Group>
-        </Col>
-        <Col md={6}>
-          <Form.Group controlId="formImageUrl" className="mb-3">
-            <Form.Label>Or enter image URL:</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="https://example.com/image.jpg"
-              value={imageUrl}
-              onChange={handleImageUrlChange}
-            />
-          </Form.Group>
-          <Button variant="primary" onClick={handleLoadImageFromUrl} disabled={!imageUrl}>
-            Load URL
-          </Button>
-        </Col>
-      </Row>
+      <div className="mb3">
+        <label htmlFor="upload" className="db fw6 lh-copy f6">
+          Upload Image:
+        </label>
+        <input
+          type="file"
+          id="upload"
+          onChange={handleImageUpload}
+          className="pa2 input-reset ba b--black-20 w-100"
+        />
+      </div>
+
+      <div className="mb3">
+        <label htmlFor="imageUrl" className="fw6 lh-copy f6">
+          Or enter image URL:
+        </label>
+        <input
+          type="text"
+          id="imageUrl"
+          value={imageUrl}
+          onChange={handleImageUrlChange}
+          placeholder="https://example.com/image.jpg"
+          className="pa2 input-reset ba b--black-20 w-100"
+        />
+        <button onClick={handleLoadImageFromUrl} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-blue mt2">
+          Load URL
+        </button>
+      </div>
 
       {selectedImage && (
-        <Row className="mb-3">
-          <Col md={6}>
-            <h2>Original Image:</h2>
-            <Image src={selectedImage} alt="Original" fluid style={{ maxWidth: '300px' }} />
-          </Col>
-          {processedImage && (
-            <Col md={6}>
-              <h2>Processed Image:</h2>
-              <Image src={processedImage} alt="Processed" fluid style={{ maxWidth: '300px' }} />
-            </Col>
-          )}
-        </Row>
+        <div className="mv3">
+          <h2 className="f4 fw6 mv2">Original Image:</h2>
+          <img src={selectedImage} alt="Original" className="mw-100" style={{ maxWidth: '300px' }} />
+        </div>
       )}
 
-      <h2 className="mt-4">Basic Adjustments</h2>
-      <Row className="mb-3">
-        <Col md="auto">
-          <Button variant="outline-secondary" onClick={() => applyOperation('grayscale')} disabled={!selectedImage}>Grayscale</Button>
-        </Col>
-        <Col md="auto">
-          <Form.Label className="me-2">Blur Radius:</Form.Label>
-          <Form.Control
-            type="number"
-            value={blurRadius}
-            onChange={(e) => setBlurRadius(parseInt(e.target.value))}
-            style={{ width: '60px' }}
-            disabled={!selectedImage}
-          />
-          <Button variant="primary" onClick={() => applyOperation('blur', { blurRadius })} disabled={!selectedImage} className="ms-2">Apply Blur</Button>
-        </Col>
-      </Row>
+      <h2 className="f4 fw6 mt4">Basic Adjustments</h2>
+      <div className="mv2">
+        <button onClick={() => applyOperation('grayscale')} disabled={!selectedImage} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-gray">Grayscale</button>
+        <label className="ml2 fw6 f6">Blur Radius:</label>
+        <input
+          type="number"
+          value={blurRadius}
+          onChange={(e) => setBlurRadius(parseInt(e.target.value))}
+          className="w2 pa2 input-reset ba b--black-20 ml1"
+          disabled={!selectedImage}
+        />
+        <button onClick={() => applyOperation('blur', { blurRadius })} disabled={!selectedImage} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-green ml2">Apply Blur</button>
+      </div>
 
-      <h2 className="mt-4">Morphological Filters</h2>
-      <Row className="mb-3">
-        <Col md="auto">
-          <Form.Label className="me-2">Kernel Size:</Form.Label>
-          <Form.Control
-            type="number"
-            value={kernelSize}
-            onChange={(e) => setKernelSize(parseInt(e.target.value))}
-            style={{ width: '60px' }}
-            disabled={!selectedImage}
-          />
-        </Col>
-        <Col md="auto">
-          <Form.Label className="me-2">Iterations:</Form.Label>
-          <Form.Control
-            type="number"
-            value={iterations}
-            onChange={(e) => setIterations(parseInt(e.target.value))}
-            style={{ width: '60px' }}
-            disabled={!selectedImage}
-          />
-        </Col>
-        <Col md="auto">
-          <Button variant="outline-primary" onClick={() => applyOperation('erosion', { kernelSize, iterations })} disabled={!selectedImage}>Erosion</Button>
-        </Col>
-        <Col md="auto">
-          <Button variant="outline-primary" onClick={() => applyOperation('dilation', { kernelSize, iterations })} disabled={!selectedImage}>Dilation</Button>
-        </Col>
-        <Col md="auto">
-          <Button variant="outline-primary" onClick={() => applyOperation('opening', { kernelSize, iterations })} disabled={!selectedImage}>Opening</Button>
-        </Col>
-        <Col md="auto">
-          <Button variant="outline-primary" onClick={() => applyOperation('closing', { kernelSize, iterations })} disabled={!selectedImage}>Closing</Button>
-        </Col>
-        <Col md="auto">
-          <Button variant="outline-primary" onClick={() => applyOperation('gradient', { kernelSize, iterations })} disabled={!selectedImage}>Gradient</Button>
-        </Col>
-        <Col md="auto">
-          <Button variant="outline-primary" onClick={() => applyOperation('tophat', { kernelSize, iterations })} disabled={!selectedImage}>Top Hat</Button>
-        </Col>
-        <Col md="auto">
-          <Button variant="outline-primary" onClick={() => applyOperation('blackhat', { kernelSize, iterations })} disabled={!selectedImage}>Black Hat</Button>
-        </Col>
-      </Row>
+      <h2 className="f4 fw6 mt4">Morphological Filters</h2>
+      <div className="mv2">
+        <label className="fw6 f6">Kernel Size:</label>
+        <input
+          type="number"
+          value={kernelSize}
+          onChange={(e) => setKernelSize(parseInt(e.target.value))}
+          className="w2 pa2 input-reset ba b--black-20 ml1"
+          disabled={!selectedImage}
+        />
+        <label className="ml2 fw6 f6">Iterations:</label>
+        <input
+          type="number"
+          value={iterations}
+          onChange={(e) => setIterations(parseInt(e.target.value))}
+          className="w2 pa2 input-reset ba b--black-20 ml1"
+          disabled={!selectedImage}
+        />
+        <button onClick={() => applyOperation('erosion', { kernelSize, iterations })} disabled={!selectedImage} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-dark-red">Erosion</button>
+        <button onClick={() => applyOperation('dilation', { kernelSize, iterations })} disabled={!selectedImage} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-dark-green ml2">Dilation</button>
+        <button onClick={() => applyOperation('opening', { kernelSize, iterations })} disabled={!selectedImage} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-dark-blue ml2">Opening</button>
+        <button onClick={() => applyOperation('closing', { kernelSize, iterations })} disabled={!selectedImage} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-purple ml2">Closing</button>
+        <button onClick={() => applyOperation('gradient', { kernelSize, iterations })} disabled={!selectedImage} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-orange ml2">Gradient</button>
+        <button onClick={() => applyOperation('tophat', { kernelSize, iterations })} disabled={!selectedImage} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-navy ml2">Top Hat</button>
+        <button onClick={() => applyOperation('blackhat', { kernelSize, iterations })} disabled={!selectedImage} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-dark-pink ml2">Black Hat</button>
+      </div>
 
-      <h2 className="mt-4">Geometric Transformations</h2>
-      <Row className="mb-3">
-        <Col md="auto">
-          <Form.Label className="me-2">Angle:</Form.Label>
-          <Form.Control
-            type="number"
-            value={angle}
-            onChange={(e) => setAngle(parseInt(e.target.value))}
-            style={{ width: '70px' }}
-            disabled={!selectedImage}
-          />
-          <Button variant="info" onClick={() => applyOperation('rotate', { angle })} disabled={!selectedImage} className="ms-2">Rotate</Button>
-        </Col>
-        <Col md="auto">
-          <Form.Label className="me-2">Scale X:</Form.Label>
-          <Form.Control
-            type="number"
-            value={scaleX}
-            onChange={(e) => setScaleX(parseFloat(e.target.value))}
-            style={{ width: '60px' }}
-            disabled={!selectedImage}
-          />
-        </Col>
-        <Col md="auto">
-          <Form.Label className="me-2">Scale Y:</Form.Label>
-          <Form.Control
-            type="number"
-            value={scaleY}
-            onChange={(e) => setScaleY(parseFloat(e.target.value))}
-            style={{ width: '60px' }}
-            disabled={!selectedImage}
-          />
-          <Button variant="info" onClick={() => applyOperation('resize', { scaleX, scaleY })} disabled={!selectedImage} className="ms-2">Resize</Button>
-        </Col>
-      </Row>
+      <h2 className="f4 fw6 mt4">Geometric Transformations</h2>
+      <div className="mv2">
+        <label className="fw6 f6">Angle:</label>
+        <input
+          type="number"
+          value={angle}
+          onChange={(e) => setAngle(parseInt(e.target.value))}
+          className="w3 pa2 input-reset ba b--black-20 ml1"
+          disabled={!selectedImage}
+        />
+        <button onClick={() => applyOperation('rotate', { angle })} disabled={!selectedImage} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-light-purple ml2">Rotate</button>
+        <label className="ml2 fw6 f6">Scale X:</label>
+        <input
+          type="number"
+          value={scaleX}
+          onChange={(e) => setScaleX(parseFloat(e.target.value))}
+          className="w2 pa2 input-reset ba b--black-20 ml1"
+          disabled={!selectedImage}
+        />
+        <label className="ml2 fw6 f6">Scale Y:</label>
+        <input
+          type="number"
+          value={scaleY}
+          onChange={(e) => setScaleY(parseFloat(e.target.value))}
+          className="w2 pa2 input-reset ba b--black-20 ml1"
+          disabled={!selectedImage}
+        />
+        <button onClick={() => applyOperation('resize', { scaleX, scaleY })} disabled={!selectedImage} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-light-blue ml2">Resize</button>
+      </div>
 
-      <h2 className="mt-4">Segmentation</h2>
-      <Row className="mb-3">
-        <Col md="auto">
-          <Form.Label className="me-2">Threshold Value:</Form.Label>
-          <Form.Control
-            type="number"
-            value={thresholdValue}
-            onChange={(e) => setThresholdValue(parseInt(e.target.value))}
-            style={{ width: '70px' }}
-            disabled={!selectedImage}
-          />
-          <Button variant="success" onClick={() => applyOperation('threshold', { thresholdValue })} disabled={!selectedImage} className="ms-2">Threshold</Button>
-        </Col>
-      </Row>
-    </Container>
+      <h2 className="f4 fw6 mt4">Segmentation</h2>
+      <div className="mv2">
+        <label className="fw6 f6">Threshold Value:</label>
+        <input
+          type="number"
+          value={thresholdValue}
+          onChange={(e) => setThresholdValue(parseInt(e.target.value))}
+          className="w3 pa2 input-reset ba b--black-20 ml1"
+          disabled={!selectedImage}
+        />
+        <button onClick={() => applyOperation('threshold', { thresholdValue })} disabled={!selectedImage} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-light-green ml2">Threshold</button>
+      </div>
+
+      {processedImage && (
+        <div className="mv3">
+          <h2 className="f4 fw6 mv2">Processed Image:</h2>
+          <img src={processedImage} alt="Processed" className="mw-100" style={{ maxWidth: '300px' }} />
+        </div>
+      )}
+    </div>
     );
 }
 

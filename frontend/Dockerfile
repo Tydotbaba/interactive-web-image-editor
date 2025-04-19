@@ -4,16 +4,16 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 COPY package*.json .
-RUN npm install
+RUN yarn install
 
 COPY . .
 
-RUN echo "Contents of /app before build:"
+# RUN echo "Contents of /app before build:"
 RUN ls -al /app
 
-RUN npm run build
+RUN yarn run build
 
-RUN echo "Contents of /app after build:"
+# RUN echo "Contents of /app after build:"
 RUN ls -al /app
 
 FROM nginx:alpine
