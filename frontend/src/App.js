@@ -20,6 +20,7 @@ function App() {
     const [thresholdValue, setThresholdValue] = useState(127);
     const [scaleX, setScaleX] = useState(0.5);
     const [scaleY, setScaleY] = useState(0.5);
+    const [activeOperation, setActiveOperation] = useState(null);
 
     // ... (handleImageUpload, handleImageUrlChange, handleLoadImageFromUrl functions)
 
@@ -87,136 +88,215 @@ function App() {
         }
     };
 
+    const handleOperationClick = (operation) => {
+      setActiveOperation(operation);
+      applyOperation(operation, getOperationParams(operation));
+    };
+  
+    const getOperationParams = (operation) => {
+      switch (operation) {
+        case 'blur':
+          return { blurRadius };
+        case 'erosion':
+        case 'dilation':
+        case 'opening':
+        case 'closing':
+        case 'gradient':
+        case 'tophat':
+        case 'blackhat':
+          return { kernelSize, iterations };
+        case 'rotate':
+          return { angle };
+        case 'resize':
+          return { scaleX, scaleY };
+        case 'threshold':
+          return { thresholdValue };
+        default:
+          return {};
+      }
+    };
+  
+
     return (
-      <div className="pa3 sans-serif bg-light-pink">
-      <h1 className="f1 fw6 mv3">Interactive Image Processor</h1>
+      <div className="flex sans-serif">
+      {/* Sidebar */}
+      <aside className="w-30 bg-lightest-blue pa3 vh-100 top-0">
+        <h2 className="f4 fw6 mv3">Operations</h2>
+        <ul className="list pl0 mv0">
+          <li className="mv2">
+            <button onClick={() => handleOperationClick('grayscale')} className={`f6 link dim br2 ph3 pv2 dib white bg-gray w-100 tl ${activeOperation === 'grayscale' ? 'bg-dark-gray' : ''}`}>Grayscale</button>
+          </li>
+          <li className="mv2">
+            <button onClick={() => handleOperationClick('blur')} className={`f6 link dim br2 ph3 pv2 dib white bg-green w-100 tl ${activeOperation === 'blur' ? 'bg-dark-green' : ''}`}>Blur</button>
+          </li>
+          <li className="mv2">
+            <button onClick={() => handleOperationClick('erosion')} className={`f6 link dim br2 ph3 pv2 dib white bg-dark-red w-100 tl ${activeOperation === 'erosion' ? 'bg-red' : ''}`}>Erosion</button>
+          </li>
+          <li className="mv2">
+            <button onClick={() => handleOperationClick('dilation')} className={`f6 link dim br2 ph3 pv2 dib white bg-dark-green w-100 tl ${activeOperation === 'dilation' ? 'bg-green' : ''}`}>Dilation</button>
+          </li>
+          <li className="mv2">
+            <button onClick={() => handleOperationClick('opening')} className={`f6 link dim br2 ph3 pv2 dib white bg-dark-blue w-100 tl ${activeOperation === 'opening' ? 'bg-blue' : ''}`}>Opening</button>
+          </li>
+          <li className="mv2">
+            <button onClick={() => handleOperationClick('closing')} className={`f6 link dim br2 ph3 pv2 dib white bg-purple w-100 tl ${activeOperation === 'closing' ? 'bg-dark-purple' : ''}`}>Closing</button>
+          </li>
+          <li className="mv2">
+            <button onClick={() => handleOperationClick('gradient')} className={`f6 link dim br2 ph3 pv2 dib white bg-orange w-100 tl ${activeOperation === 'gradient' ? 'bg-dark-orange' : ''}`}>Gradient</button>
+          </li>
+          <li className="mv2">
+            <button onClick={() => handleOperationClick('tophat')} className={`f6 link dim br2 ph3 pv2 dib white bg-navy w-100 tl ${activeOperation === 'tophat' ? 'bg-dark-navy' : ''}`}>Top Hat</button>
+          </li>
+          <li className="mv2">
+            <button onClick={() => handleOperationClick('blackhat')} className={`f6 link dim br2 ph3 pv2 dib white bg-dark-pink w-100 tl ${activeOperation === 'blackhat' ? 'bg-pink' : ''}`}>Black Hat</button>
+          </li>
+          <li className="mv2">
+            <button onClick={() => handleOperationClick('rotate')} className={`f6 link dim br2 ph3 pv2 dib white bg-light-purple w-100 tl ${activeOperation === 'rotate' ? 'bg-purple' : ''}`}>Rotate</button>
+          </li>
+          <li className="mv2">
+            <button onClick={() => handleOperationClick('resize')} className={`f6 link dim br2 ph3 pv2 dib white bg-light-blue w-100 tl ${activeOperation === 'resize' ? 'bg-blue' : ''}`}>Resize</button>
+          </li>
+          <li className="mv2">
+            <button onClick={() => handleOperationClick('threshold')} className={`f6 link dim br2 ph3 pv2 dib white bg-light-green w-100 tl ${activeOperation === 'threshold' ? 'bg-green' : ''}`}>Threshold</button>
+          </li>
+        </ul>
+      </aside>
 
-      <div className="mb3">
-        <label htmlFor="upload" className="db fw6 lh-copy f6">
-          Upload Image:
-        </label>
-        <input
-          type="file"
-          id="upload"
-          onChange={handleImageUpload}
-          className="pa2 input-reset ba b--black-20 w-100"
-        />
-      </div>
+      {/* Main Content */}
+      <div className="w-70 pa3 bg-black gold center">
+        <h1 className="f3 fw6 mv3">Interactive Image Processor</h1>
 
-      <div className="mb3">
-        <label htmlFor="imageUrl" className="fw6 lh-copy f6">
-          Or enter image URL:
-        </label>
-        <input
-          type="text"
-          id="imageUrl"
-          value={imageUrl}
-          onChange={handleImageUrlChange}
-          placeholder="https://example.com/image.jpg"
-          className="pa2 input-reset ba b--black-20 w-100"
-        />
-        <button onClick={handleLoadImageFromUrl} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-blue mt2">
-          Load URL
-        </button>
-      </div>
-
-      {selectedImage && (
-        <div className="mv3">
-          <h2 className="f4 fw6 mv2">Original Image:</h2>
-          <img src={selectedImage} alt="Original" className="mw-100" style={{ maxWidth: '300px' }} />
+        <div className="mb3">
+          <label htmlFor="upload" className="db fw6 lh-copy f6">
+            Upload Image:
+          </label>
+          <input
+            type="file"
+            id="upload"
+            onChange={handleImageUpload}
+            className="pa2 input-reset ba b--black-20 w-100"
+          />
         </div>
-      )}
 
-      <h2 className="f4 fw6 mt4">Basic Adjustments</h2>
-      <div className="mv2">
-        <button onClick={() => applyOperation('grayscale')} disabled={!selectedImage} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-gray">Grayscale</button>
-        <label className="ml2 fw6 f6">Blur Radius:</label>
-        <input
-          type="number"
-          value={blurRadius}
-          onChange={(e) => setBlurRadius(parseInt(e.target.value))}
-          className="w2 pa2 input-reset ba b--black-20 ml1"
-          disabled={!selectedImage}
-        />
-        <button onClick={() => applyOperation('blur', { blurRadius })} disabled={!selectedImage} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-green ml2">Apply Blur</button>
-      </div>
-
-      <h2 className="f4 fw6 mt4">Morphological Filters</h2>
-      <div className="mv2">
-        <label className="fw6 f6">Kernel Size:</label>
-        <input
-          type="number"
-          value={kernelSize}
-          onChange={(e) => setKernelSize(parseInt(e.target.value))}
-          className="w2 pa2 input-reset ba b--black-20 ml1"
-          disabled={!selectedImage}
-        />
-        <label className="ml2 fw6 f6">Iterations:</label>
-        <input
-          type="number"
-          value={iterations}
-          onChange={(e) => setIterations(parseInt(e.target.value))}
-          className="w2 pa2 input-reset ba b--black-20 ml1"
-          disabled={!selectedImage}
-        />
-        <button onClick={() => applyOperation('erosion', { kernelSize, iterations })} disabled={!selectedImage} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-dark-red">Erosion</button>
-        <button onClick={() => applyOperation('dilation', { kernelSize, iterations })} disabled={!selectedImage} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-dark-green ml2">Dilation</button>
-        <button onClick={() => applyOperation('opening', { kernelSize, iterations })} disabled={!selectedImage} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-dark-blue ml2">Opening</button>
-        <button onClick={() => applyOperation('closing', { kernelSize, iterations })} disabled={!selectedImage} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-purple ml2">Closing</button>
-        <button onClick={() => applyOperation('gradient', { kernelSize, iterations })} disabled={!selectedImage} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-orange ml2">Gradient</button>
-        <button onClick={() => applyOperation('tophat', { kernelSize, iterations })} disabled={!selectedImage} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-navy ml2">Top Hat</button>
-        <button onClick={() => applyOperation('blackhat', { kernelSize, iterations })} disabled={!selectedImage} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-dark-pink ml2">Black Hat</button>
-      </div>
-
-      <h2 className="f4 fw6 mt4">Geometric Transformations</h2>
-      <div className="mv2">
-        <label className="fw6 f6">Angle:</label>
-        <input
-          type="number"
-          value={angle}
-          onChange={(e) => setAngle(parseInt(e.target.value))}
-          className="w3 pa2 input-reset ba b--black-20 ml1"
-          disabled={!selectedImage}
-        />
-        <button onClick={() => applyOperation('rotate', { angle })} disabled={!selectedImage} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-light-purple ml2">Rotate</button>
-        <label className="ml2 fw6 f6">Scale X:</label>
-        <input
-          type="number"
-          value={scaleX}
-          onChange={(e) => setScaleX(parseFloat(e.target.value))}
-          className="w2 pa2 input-reset ba b--black-20 ml1"
-          disabled={!selectedImage}
-        />
-        <label className="ml2 fw6 f6">Scale Y:</label>
-        <input
-          type="number"
-          value={scaleY}
-          onChange={(e) => setScaleY(parseFloat(e.target.value))}
-          className="w2 pa2 input-reset ba b--black-20 ml1"
-          disabled={!selectedImage}
-        />
-        <button onClick={() => applyOperation('resize', { scaleX, scaleY })} disabled={!selectedImage} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-light-blue ml2">Resize</button>
-      </div>
-
-      <h2 className="f4 fw6 mt4">Segmentation</h2>
-      <div className="mv2">
-        <label className="fw6 f6">Threshold Value:</label>
-        <input
-          type="number"
-          value={thresholdValue}
-          onChange={(e) => setThresholdValue(parseInt(e.target.value))}
-          className="w3 pa2 input-reset ba b--black-20 ml1"
-          disabled={!selectedImage}
-        />
-        <button onClick={() => applyOperation('threshold', { thresholdValue })} disabled={!selectedImage} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-light-green ml2">Threshold</button>
-      </div>
-
-      {processedImage && (
-        <div className="mv3">
-          <h2 className="f4 fw6 mv2">Processed Image:</h2>
-          <img src={processedImage} alt="Processed" className="mw-100" style={{ maxWidth: '300px' }} />
+        <div className="mb3">
+          <label htmlFor="imageUrl" className="db fw6 lh-copy f6">
+            Or enter image URL:
+          </label>
+          <input
+            type="text"
+            id="imageUrl"
+            value={imageUrl}
+            onChange={handleImageUrlChange}
+            placeholder="https://example.com/image.jpg"
+            className="pa2 input-reset ba b--black-20 w-100"
+          />
+          <button onClick={handleLoadImageFromUrl} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-blue mt2">
+            Load URL
+          </button>
         </div>
-      )}
+
+        
+        {activeOperation === 'blur' && (
+          <div className="mt4">
+            <label className="db fw6 lh-copy f6">Blur Radius:</label>
+            <input
+              type="number"
+              value={blurRadius}
+              onChange={(e) => setBlurRadius(parseInt(e.target.value))}
+              className="pa2 input-reset ba b--black-20 w-20"
+              disabled={!selectedImage}
+            />
+            <button onClick={() => applyOperation('blur', { blurRadius })} disabled={!selectedImage} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-green ml2">Apply</button>
+          </div>
+        )}
+
+        {(activeOperation === 'erosion' || activeOperation === 'dilation' || activeOperation === 'opening' || activeOperation === 'closing' || activeOperation === 'gradient' || activeOperation === 'tophat' || activeOperation === 'blackhat') && (
+          <div className="mt4">
+            <label className="db fw6 lh-copy f6">Kernel Size:</label>
+            <input
+              type="number"
+              value={kernelSize}
+              onChange={(e) => setKernelSize(parseInt(e.target.value))}
+              className="pa2 input-reset ba b--black-20 w-20 mr2"
+              disabled={!selectedImage}
+            />
+            <label className="db fw6 lh-copy f6">Iterations:</label>
+            <input
+              type="number"
+              value={iterations}
+              onChange={(e) => setIterations(parseInt(e.target.value))}
+              className="pa2 input-reset ba b--black-20 w-20"
+              disabled={!selectedImage}
+            />
+            <button onClick={() => applyOperation(activeOperation, { kernelSize, iterations })} disabled={!selectedImage} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-dark-red ml2">Apply</button>
+          </div>
+        )}
+
+        {activeOperation === 'rotate' && (
+          <div className="mt4">
+            <label className="db fw6 lh-copy f6">Angle:</label>
+            <input
+              type="number"
+              value={angle}
+              onChange={(e) => setAngle(parseInt(e.target.value))}
+              className="pa2 input-reset ba b--black-20 w-20"
+              disabled={!selectedImage}
+            />
+            <button onClick={() => applyOperation('rotate', { angle })} disabled={!selectedImage} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-light-purple ml2">Apply</button>
+          </div>
+        )}
+
+        {activeOperation === 'resize' && (
+          <div className="mt4">
+            <label className="db fw6 lh-copy f6 mr2">Scale X:</label>
+            <input
+              type="number"
+              value={scaleX}
+              onChange={(e) => setScaleX(parseFloat(e.target.value))}
+              className="pa2 input-reset ba b--black-20 w-20 mr2"
+              disabled={!selectedImage}
+            />
+            <label className="db fw6 lh-copy f6 mr2">Scale Y:</label>
+            <input
+              type="number"
+              value={scaleY}
+              onChange={(e) => setScaleY(parseFloat(e.target.value))}
+              className="pa2 input-reset ba b--black-20 w-20"
+              disabled={!selectedImage}
+            />
+            <button onClick={() => applyOperation('resize', { scaleX, scaleY })} disabled={!selectedImage} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-light-blue ml2">Apply</button>
+          </div>
+        )}
+
+        {activeOperation === 'threshold' && (
+          <div className="mt4">
+            <label className="db fw6 lh-copy f6">Threshold Value:</label>
+            <input
+              type="number"
+              value={thresholdValue}
+              onChange={(e) => setThresholdValue(parseInt(e.target.value))}
+              className="pa2 input-reset ba b--black-20 w-20"
+              disabled={!selectedImage}
+            />
+            <button onClick={() => applyOperation('threshold', { thresholdValue })} disabled={!selectedImage} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-light-green ml2">Apply</button>
+          </div>
+        )}
+
+        {selectedImage && (
+          <div className="flex-wrap">
+            <div className="m3">
+              <h2 className="f4 fw6">Original Image:</h2>
+              <img src={selectedImage} alt="Original" className="mw-100" />
+            </div>
+            {processedImage && (
+              <div className="m3">
+                <h2 className="f4 fw6">Processed Image:</h2>
+                <img src={processedImage} alt="Processed" className="mw-100" />
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
     );
 }
