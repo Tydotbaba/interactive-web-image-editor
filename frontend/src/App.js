@@ -170,41 +170,45 @@ function App() {
 
       
       {/* Main Content */}
-      <div className="zone">
+      <div className="" >
         <h1 className="f1 fw6 black mv3">Interactive Image Processor</h1>
 
-        <div className="mb3">
-          <label htmlFor="upload" className="db fw6 lh-copy f6">
-            Upload Image:
-          </label>
-          <input
-            type="file"
-            id="upload"
-            onChange={handleImageUpload}
-            className="pa2 input-reset ba b--black-20 w-100"
-          />
-        </div>
+        <div className="flex justify-center">
+          <div className="ma3">
+            <label htmlFor="upload" className="db fw6 lh-copy f6">
+              Upload Image:
+            </label>
+            <input
+              type="file"
+              id="upload"
+              onChange={handleImageUpload}
+              className="pa2 input-reset ba b--black-20 w-100"
+            />
+          </div>
 
-        <div className="mb3">
-          <label htmlFor="imageUrl" className="db fw6 lh-copy f6">
-            Or enter image URL:
-          </label>
-          <input
-            type="text"
-            id="imageUrl"
-            value={imageUrl}
-            onChange={handleImageUrlChange}
-            placeholder="https://example.com/image.jpg"
-            className="pa2 input-reset ba b--black-20 w-100"
-          />
-          <button onClick={handleLoadImageFromUrl} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-blue mt2">
-            Load URL
-          </button>
+          <div className="ma3 flex items-center">
+            <div className="">
+              <label htmlFor="imageUrl" className="db fw6 lh-copy f6">
+                Or enter image URL:
+              </label>
+              <input
+                type="text"
+                id="imageUrl"
+                value={imageUrl}
+                onChange={handleImageUrlChange}
+                placeholder="https://example.com/image.jpg"
+                className="pa2 input-reset ba b--black-20 w-100"
+              />
+            </div>
+            <button onClick={handleLoadImageFromUrl} className="f6 link dim dib br2 ph3 pv2 ml3 mt3  dib white bg-blue mt2">
+              Load URL
+            </button>
+          </div>
         </div>
 
         
         {activeOperation === 'blur' && (
-          <div className="mt4">
+          <div className="mt4 tc">
             <label className="db fw6 lh-copy f6">Blur Radius:</label>
             <input
               type="number"
