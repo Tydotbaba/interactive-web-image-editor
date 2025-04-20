@@ -170,11 +170,11 @@ function App() {
 
       
       {/* Main Content */}
-      <div className="" >
-        <h1 className="f1 fw6 black mv3">Interactive Image Processor</h1>
+      <div className="flex-row-m w-100 justify-center " >
+        <h1 className="f1-l f1-m f1-ns fw6 black mv3">Interactive Image Processor</h1>
 
-        <div className="flex justify-center">
-          <div className="ma3">
+        <div className="flex flex-wrap justify-center">
+          <div className="mr3">
             <label htmlFor="upload" className="db fw6 lh-copy f6">
               Upload Image:
             </label>
@@ -186,9 +186,9 @@ function App() {
             />
           </div>
 
-          <div className="ma3 flex items-center">
-            <div className="">
-              <label htmlFor="imageUrl" className="db fw6 lh-copy f6">
+          <div className="flex flex-wrap">
+            <div className="mt4-m w-100-m ml5-l ">
+              <label htmlFor="imageUrl" className="db fw6 lh-copy f6 ">
                 Or enter image URL:
               </label>
               <input
@@ -200,7 +200,7 @@ function App() {
                 className="pa2 input-reset ba b--black-20 w-100"
               />
             </div>
-            <button onClick={handleLoadImageFromUrl} className="f6 link dim dib br2 ph3 pv2 ml3 mt3  dib white bg-blue mt2">
+            <button onClick={handleLoadImageFromUrl} className="f6 link dim dib br2 ph3 pv2 ml3 mt3 center  dib white bg-blue mt2">
               Load URL
             </button>
           </div>
@@ -208,7 +208,7 @@ function App() {
 
         
         {activeOperation === 'blur' && (
-          <div className="mt4 tc">
+          <div className="mt3-l mt3-m tc">
             <label className="db fw6 lh-copy f6">Blur Radius:</label>
             <input
               type="number"
@@ -222,7 +222,7 @@ function App() {
         )}
 
         {(activeOperation === 'erosion' || activeOperation === 'dilation' || activeOperation === 'opening' || activeOperation === 'closing' || activeOperation === 'gradient' || activeOperation === 'tophat' || activeOperation === 'blackhat') && (
-          <div className="mt4">
+          <div className="mt4 tc">
             <label className="db fw6 lh-copy f6">Kernel Size:</label>
             <input
               type="number"
@@ -244,7 +244,7 @@ function App() {
         )}
 
         {activeOperation === 'rotate' && (
-          <div className="mt4">
+          <div className="mt4 tc">
             <label className="db fw6 lh-copy f6">Angle:</label>
             <input
               type="number"
@@ -258,7 +258,7 @@ function App() {
         )}
 
         {activeOperation === 'resize' && (
-          <div className="mt4">
+          <div className="mt4 tc">
             <label className="db fw6 lh-copy f6 mr2">Scale X:</label>
             <input
               type="number"
@@ -280,7 +280,7 @@ function App() {
         )}
 
         {activeOperation === 'threshold' && (
-          <div className="mt4">
+          <div className="mt4 tc">
             <label className="db fw6 lh-copy f6">Threshold Value:</label>
             <input
               type="number"
@@ -294,13 +294,13 @@ function App() {
         )}
 
         {selectedImage && (
-          <div className="flex justify-center mt4">
-            <div className="ma3">
+          <div className="flex flex-wrap  justify-center mt1">
+            <div className="ma2">
               <h2 className="f4 fw6">Original Image:</h2>
               <img src={selectedImage} alt="Original" className="mw-100" width={500} />
             </div>
             {processedImage && (
-              <div className="ma3 ">
+              <div className="ma2">
                 <h2 className="f4 fw6">Processed Image:</h2>
                 <img src={processedImage} alt="Processed" className="wm-100"  width={500} />
               </div>
