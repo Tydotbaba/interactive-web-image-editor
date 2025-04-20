@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-// import './App.css'; // You might still have some custom styles
+import './App.css'; // You might still have some custom styles
 // import Button from 'react-bootstrap/Button';
 // import Container from 'react-bootstrap/Container';
 // import Row from 'react-bootstrap/Row';
@@ -22,7 +22,12 @@ function App() {
     const [scaleY, setScaleY] = useState(0.5);
     const [activeOperation, setActiveOperation] = useState(null);
 
-    // ... (handleImageUpload, handleImageUrlChange, handleLoadImageFromUrl functions)
+    const [isOpen, setIsOpen] = useState(true);
+
+    const toggleSidebar = () => {
+      setIsOpen(!isOpen);
+      console.log(isOpen)
+    };
 
     const handleImageUpload = (event) => {
       const file = event.target.files[0];
@@ -118,10 +123,11 @@ function App() {
   
 
     return (
-      <div className="flex sans-serif">
+      <div>
+      <div className="main sans-serif">
       {/* Sidebar */}
-      <aside className="w-30 bg-lightest-blue pa3 vh-100 top-0">
-        <h2 className="f4 fw6 mv3">Operations</h2>
+      <aside className="zone bg-lightest-blue top-0 left-0 bottom-0" >
+        <h2 className="f4 fw6 mv3 tc">Operations</h2>
         <ul className="list pl0 mv0">
           <li className="mv2">
             <button onClick={() => handleOperationClick('grayscale')} className={`f6 link dim br2 ph3 pv2 dib white bg-gray w-100 tl ${activeOperation === 'grayscale' ? 'bg-dark-gray' : ''}`}>Grayscale</button>
@@ -162,9 +168,10 @@ function App() {
         </ul>
       </aside>
 
+      
       {/* Main Content */}
-      <div className="w-70 pa3 bg-black gold center">
-        <h1 className="f3 fw6 mv3">Interactive Image Processor</h1>
+      <div className="zone">
+        <h1 className="f1 fw6 black mv3">Interactive Image Processor</h1>
 
         <div className="mb3">
           <label htmlFor="upload" className="db fw6 lh-copy f6">
@@ -283,21 +290,32 @@ function App() {
         )}
 
         {selectedImage && (
-          <div className="flex-wrap">
-            <div className="m3">
+          <div className="flex justify-center mt4">
+            <div className="ma3">
               <h2 className="f4 fw6">Original Image:</h2>
-              <img src={selectedImage} alt="Original" className="mw-100" />
+              <img src={selectedImage} alt="Original" className="mw-100" width={500} />
             </div>
             {processedImage && (
-              <div className="m3">
+              <div className="ma3 ">
                 <h2 className="f4 fw6">Processed Image:</h2>
-                <img src={processedImage} alt="Processed" className="mw-100" />
+                <img src={processedImage} alt="Processed" className="wm-100"  width={500} />
               </div>
             )}
           </div>
         )}
       </div>
-    </div>
+      </div>
+
+
+      <footer className="bg-light-gray pa3 vw-100 tc">
+        <p className="f3">Image Processing App © {new Date().getFullYear()}</p>
+        <p className="f6">Built with React</p>
+        <p className="f6">Backend powered by Flask</p>
+        <p className="f6">Image processing powered by OpenCV</p>
+        <p className="f6">Source code available on <a href="https://github.com/Tydotbaba/interactive-web-image-editor" className="link dim blue">GitHub</a></p>
+      </footer>
+      </div>
+      
     );
 }
 
