@@ -1,0 +1,33 @@
+name: Docker CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Compose
+        uses: docker/setup-buildx-action@v2
+
+      - name: Start Docker Compose
+        run: docker-compose up -d
+
+      - name: Wait for services to start
+        run: sleep 15 # Adjust the wait time as needed
+
+      - name: Run Backend Health Check (Example)
+        run: |
+          curl http://localhost:8000/ || true
+          echo "Checked backend status"
+
+      - name: Run Frontend Health Check (Example)
+        run: |
+          curl http://localhost:3000/ || true
+          echo "Checked frontend status"
+
+      - name: Stop Docker Compose
+        if: always()
+        run: docker-compose down

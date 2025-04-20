@@ -124,10 +124,10 @@ function App() {
 
     return (
       <div>
-      <div className="main sans-serif">
+      <div className="main">
       {/* Sidebar */}
-      <aside className="zone bg-lightest-blue top-0 left-0 bottom-0" >
-        <h2 className="f4 fw6 mv3 tc">Operations</h2>
+      <aside className="bg-lightest-blue top-0 left-0 bottom-0" >
+        <h2 className="f4 fw6 tc">Operations</h2>
         <ul className="list pl0 mv0">
           <li className="mv2">
             <button onClick={() => handleOperationClick('grayscale')} className={`f6 link dim br2 ph3 pv2 dib white bg-gray w-100 tl ${activeOperation === 'grayscale' ? 'bg-dark-gray' : ''}`}>Grayscale</button>
@@ -171,7 +171,7 @@ function App() {
       
       {/* Main Content */}
       <div className="flex-row-m w-100 justify-center " >
-        <h1 className="f1-l f1-m f1-ns fw6 black mv3">Interactive Image Processor</h1>
+        <h1 className="f-5-l f3 fw6 black mv3">Interactive Image Processor</h1>
 
         <div className="flex flex-wrap justify-center">
           <div className="mr3">
@@ -222,7 +222,8 @@ function App() {
         )}
 
         {(activeOperation === 'erosion' || activeOperation === 'dilation' || activeOperation === 'opening' || activeOperation === 'closing' || activeOperation === 'gradient' || activeOperation === 'tophat' || activeOperation === 'blackhat') && (
-          <div className="mt4 tc">
+          <div className="flex flex-wrap justify-center   mt4 tc">
+            <div className='flex flex-wrap justify-center'>
             <label className="db fw6 lh-copy f6">Kernel Size:</label>
             <input
               type="number"
@@ -231,6 +232,9 @@ function App() {
               className="pa2 input-reset ba b--black-20 w-20 mr2"
               disabled={!selectedImage}
             />
+            </div>
+
+            <div className='flex flex-wrap justify-center'>
             <label className="db fw6 lh-copy f6">Iterations:</label>
             <input
               type="number"
@@ -239,6 +243,7 @@ function App() {
               className="pa2 input-reset ba b--black-20 w-20"
               disabled={!selectedImage}
             />
+            </div>
             <button onClick={() => applyOperation(activeOperation, { kernelSize, iterations })} disabled={!selectedImage} className="f6 link dim br2 ph3 pv2 mb2 dib white bg-dark-red ml2">Apply</button>
           </div>
         )}
