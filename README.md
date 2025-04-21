@@ -49,7 +49,7 @@ Together, these technologies create a robust, scalable, and efficient system for
 
 ## Usage
 
-1.  Open the application in your browser at `https://tydotbaba.github.io/interactive-web-image-editor/`.
+1.  Open the application in your browser by click on this <a href="https://tydotbaba.github.io/interactive-web-image-editor/" target="_blank"> link</a>.
 2. ✅ Upload an image or enter an image URL to start editing.
 3. ✅ Use the tools provided to make adjustments.
 4. ✅ Download the edited image when you're done.
