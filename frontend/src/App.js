@@ -71,7 +71,9 @@ function App() {
                     scale_y: params.scaleY !== undefined ? params.scaleY : scaleY,
                 });
 
-                const response = await fetch('http://localhost:8000/process_image', {
+                const backend_url = 'https://image-editor-backend-454615182879.europe-west2.run.app';
+
+                const response = await fetch(`${backend_url}/process_image`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',

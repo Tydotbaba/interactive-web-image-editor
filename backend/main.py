@@ -11,6 +11,7 @@ origins = [
     "http://localhost:3000",
     "http://localhost",
     "https://localhost",
+    "https://tydotbaba.github.io"
 ]
 
 app.add_middleware(
@@ -116,4 +117,4 @@ async def process_image(
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8080)
