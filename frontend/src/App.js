@@ -24,10 +24,10 @@ function App() {
 
     const [isOpen, setIsOpen] = useState(true);
 
-    const toggleSidebar = () => {
-      setIsOpen(!isOpen);
-      console.log(isOpen)
-    };
+    // const toggleSidebar = () => {
+    //   setIsOpen(!isOpen);
+    //   console.log(isOpen)
+    // };
 
     const handleImageUpload = (event) => {
       const file = event.target.files[0];
