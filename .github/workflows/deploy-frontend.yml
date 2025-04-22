@@ -4,12 +4,13 @@ on:
   push:
     branches: [main] # Or your main development branch (e.g., master)
 
+permissions:
+  pages: write
+  contents: read # Explicitly set even if workflow-level is different
+  
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      contents: read # Explicitly set even if workflow-level is different
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
