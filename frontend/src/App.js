@@ -22,7 +22,7 @@ function App() {
     const [scaleY, setScaleY] = useState(0.5);
     const [activeOperation, setActiveOperation] = useState(null);
 
-    const [isOpen, setIsOpen] = useState(true);
+    // const [isOpen, setIsOpen] = useState(true);
 
     // const toggleSidebar = () => {
     //   setIsOpen(!isOpen);
